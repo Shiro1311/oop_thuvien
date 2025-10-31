@@ -2,3 +2,5 @@ NXB01;Kim Dong
 NXB02;Giao Duc
 NXB03;Van Hoc
 NXB04;The gioi moi
+NXB05;quoc gia
+NXB06;thế giới cũ

@@ -3,3 +3,5 @@ TG02;To Hoai
 TG03;Nam Cao
 TG15;Yuval Noah Harari
 TG05;Dale Carnegie
+TG06;nhiều tác giả
+TG07;Trịnh Minh Toàn

@@ -1,8 +1,8 @@
 // Đặt file này trong thư mục: src/MainProgram.java
-import service.QuanLyThuVien;
-import ui.MenuThuThu;
-import ui.MenuNguoiMuon;
 import java.util.Scanner;
+import service.QuanLyThuVien;
+import ui.MenuNguoiMuon;
+import ui.MenuThuThu;
 
 public class MainProgram {
     public static void main(String[] args) {
