@@ -1,0 +1,4 @@
+TL0001;Cho toi xin mot ve di tuoi tho;TG01;NXB01;2010;200
+TL0002;De Men Phieu Luu Ky;TG02;NXB01;1941;150
+TL0016;Sapiens;TG15;NXB03;2014;500
+TL0004;đắc nhân tâm;TG05;NXB04;2021;200

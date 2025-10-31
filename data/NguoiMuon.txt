@@ -1,0 +1,2 @@
+NM01;Tran Van A;20;Ha Noi;0001
+NM02;Le Thi B;22;Sai Gon;0002

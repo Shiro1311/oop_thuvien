@@ -1,0 +1,5 @@
+TG01;Nguyen Nhat Anh
+TG02;To Hoai
+TG03;Nam Cao
+TG15;Yuval Noah Harari
+TG05;Dale Carnegie
