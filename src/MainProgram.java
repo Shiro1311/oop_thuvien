@@ -1,4 +1,3 @@
-// Đặt file này trong thư mục: src/MainProgram.java
 import java.util.Scanner;
 import service.QuanLyThuVien;
 import ui.MenuNguoiMuon;
@@ -6,15 +5,10 @@ import ui.MenuThuThu;
 
 public class MainProgram {
     public static void main(String[] args) {
-        // CHANGED: Khởi tạo Scanner ở main
         Scanner sc = new Scanner(System.in);
-        
-        // CHANGED: Truyền Scanner vào constructor
         QuanLyThuVien ql = new QuanLyThuVien(sc); 
         
-        ql.khoiTaoDuLieu(); // Sẽ gọi docDuLieu()
-        
-        // NEW: Gọi phương thức static
+        ql.khoiTaoDuLieu(); 
         QuanLyThuVien.inTenThuVien(); 
 
         while (true) {
@@ -23,19 +17,44 @@ public class MainProgram {
             System.out.println("2. Nguoi muon");
             System.out.println("0. Thoat");
             System.out.print("Chon: ");
-            int choice = Integer.parseInt(sc.nextLine());
+            
+            int choice = -1;
+            try {
+                String input = sc.nextLine();
+                if (input.isEmpty()) continue;
+                choice = Integer.parseInt(input);
+            } catch (Exception e) {
+                System.out.println("Vui long nhap so!");
+                continue;
+            }
 
-            // CHANGED: Gọi ghiDuLieu() khi thoát
             if (choice == 0) {
-                ql.ghiDuLieu(); // <-- NEW: Ghi file trước khi thoát
+                ql.ghiDuLieu();
                 break;
             }
             
-            // CHANGED: Truyền 'sc' vào các Menu
-            if (choice == 1) new MenuThuThu(ql, sc).hienThi(); 
-            if (choice == 2) new MenuNguoiMuon(ql, sc).hienThi();
+            // =============================================================
+            // === NEW: THÊM BƯỚC XÁC THỰC Ở ĐÂY  ===
+            // =============================================================
+            if (choice == 1) {
+                System.out.print("\n--- XAC THUC THU THU ---");
+                System.out.print("\nVui long nhap Ma Thu Thu cua ban (VD: TT01): ");
+                String maNhap = sc.nextLine().toUpperCase();
+                
+                // Gọi hàm "gác cổng"
+                if (ql.xacThucThuThu(maNhap)) {
+                    // Nếu đúng, mới cho vào Menu
+                    new MenuThuThu(ql, sc, maNhap).hienThi(); 
+                }
+                // Nếu sai, tự động quay lại menu chính
+            }
+            // =============================================================
+            
+            if (choice == 2) {
+                new MenuNguoiMuon(ql, sc).hienThi();
+            }
         }
         System.out.println("Tam biet!");
-        sc.close(); // CHANGED: Đóng Scanner ở đây
+        sc.close();
     }
 }

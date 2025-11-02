@@ -1,1 +1,4 @@
 TT01;Nguyen Van Thu;30;Ha Noi;160;50000
+TT02;Trịnh Minh Toàn;19;Sài Gòn;180;50000
+TT03;CAO THANH TÀI;22;SÀI GÒN;160;50000
+TT04;lê quốc việt;12;sài gòn;120;50000

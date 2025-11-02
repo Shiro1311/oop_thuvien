@@ -4,3 +4,4 @@ NM03;trịnh minh toàn;12;Bình Dương;0003
 NM04;lâm văn nên;31;tây  ninh;0004
 NM05;võ văn A;11;an giang;0005
 NM06;lâm văn B;12;an giang;0006
+NM07;cao thanh tai;20;hcm;0007

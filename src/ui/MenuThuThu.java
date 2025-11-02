@@ -7,10 +7,13 @@ import service.QuanLyThuVien;
 public class MenuThuThu {
     private QuanLyThuVien ql;
     private Scanner sc;
+    //biến nhớ mã thủ thư đăng nhập
+    private String maThuThuDangNhap;
 
-    public MenuThuThu(QuanLyThuVien ql, Scanner sc) {
+    public MenuThuThu(QuanLyThuVien ql, Scanner sc, String maThuThuDaXacThuc) {
         this.ql = ql;
         this.sc = sc;
+        this.maThuThuDangNhap = maThuThuDaXacThuc;
     }
 
     public void hienThi() {
@@ -26,9 +29,11 @@ public class MenuThuThu {
             System.out.println("5. Xem chi tiet muon cua mot nguoi"); // (Yêu cầu 3c)
             System.out.println("6. Xem tat ca phieu tra");
             
-            System.out.println("\n--- Quan Ly Nguoi Muon ---");
+            System.out.println("\n--- Quan Ly Nhân Sự ---");
             System.out.println("7. Them nguoi muon moi"); // (Yêu cầu 1)
             System.out.println("8. Xem danh sach nguoi muon"); // (Yêu cầu 3a)
+            System.out.println("9. Xem danh sach thu thu");
+            System.out.println("10. Them thu thu moi (Chi TT01)");
 
             System.out.println("\n0. Quay lai menu chinh");
             System.out.print("Chon: ");
@@ -62,6 +67,8 @@ public class MenuThuThu {
                 // QL Nguoi Muon
                 case 7: ql.themNguoiMuon(); break; // (Yêu cầu 1)
                 case 8: ql.hienThiNguoiMuon(); break; // (Yêu cầu 3a)
+                case 9: ql.hienThiThuThu(); break;
+                case 10: ql.themThuThuMoi(maThuThuDangNhap); break;
                 
                 default: System.out.println("Lua chon khong hop le!");
             }

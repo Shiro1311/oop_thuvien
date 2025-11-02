@@ -620,6 +620,100 @@ public class QuanLyThuVien implements IQuanLy { // CHANGED: Thêm interface
         System.out.println("Ma: " + maNM);
         System.out.println("The thu vien: " + theMoi.getMaThe() + " (" + theMoi.getLoai() + ")");
     }
+
+    /**
+     * NEW: Chức năng riêng cho MenuNguoiMuon (Yêu cầu của bạn)
+     * Chỉ hiển thị sách của một người mượn cụ thể.
+     * UPDATED: Thêm logic tính số ngày mượn và cảnh báo phạt
+     */
+    public void hienThiSachCuaMotNguoiMuon() {
+            System.out.println("\n--- XEM SACH BAN DANG MUON ---");
+            System.out.print("Vui long nhap Ma Nguoi Muon cua ban (VD: NM01): ");
+            String maNM = sc.nextLine().toUpperCase();
+            
+            // Bước 1: Tìm người mượn
+            NguoiMuon nm = null;
+            for(int i = 0; i < slNguoiMuon; i++) {
+                if(dsNguoiMuon[i].getMa().equals(maNM)) {
+                    nm = dsNguoiMuon[i];
+                    break;
+                }
+            }
+            
+            if (nm == null) {
+                System.out.println("Khong tim thay Ma Nguoi Muon: " + maNM);
+                return;
+            }
+            
+            // Bước 2: Lấy thẻ của họ và chào mừng
+            TheThuVien theCuaNM = nm.getThe();
+            System.out.println("Chao mung, " + nm.getTen() + ". (The: " + theCuaNM.getMaThe() + ")");
+            
+            // =============================================================
+            // === NEW: LẤY THÔNG TIN NGÀY VÀ LỊCH TRƯỚC ===
+            // =============================================================
+            int maxDays = theCuaNM.getSoNgayMuon(); // Lấy số ngày tối đa (15 hoặc 30)
+            Calendar homNay = Calendar.getInstance(); // Lấy ngày hôm nay
+            
+            System.out.println("Quyen loi cua ban: Toi da " + maxDays + " ngay/lan muon.");
+            // =============================================================
+
+            
+            // Bước 3: Lặp qua danh sách mượn
+            System.out.println("\n--- CAC SACH BAN DANG MUON ---");
+            
+            boolean timThaySach = false;
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+            for (int i = 0; i < slMuon; i++) {
+                TTMuon tt = dsMuon[i];
+                
+                // Kiểm tra: Phải là thẻ của người này VÀ sách chưa trả
+                if (tt.getTheMuon() == theCuaNM && tt.getNgayTra() == null) {
+                    timThaySach = true;
+                    
+                    String tenSach = "Sach khong ro ten";
+                    if (tt.getChiTietSach() != null && tt.getChiTietSach().getSach() != null) {
+                        tenSach = tt.getChiTietSach().getSach().getTen();
+                    }
+                    String ngayMuonStr = sdf.format(tt.getNgayMuon().getTime());
+                    
+                    // =============================================================
+                    // === NEW: TÍNH TOÁN SỐ NGÀY VÀ PHẠT (YÊU CẦU CỦA TÔI) ===
+                    // =============================================================
+                    
+                    // Tính số ngày đã mượn
+                    long millisDiff = homNay.getTimeInMillis() - tt.getNgayMuon().getTimeInMillis();
+                    long soNgayDaMuon = (millisDiff / (1000 * 60 * 60 * 24)) + 1; // +1 vì tính cả ngày mượn
+                    
+                    double phatTiemNang = 0;
+                    String trangThaiNgay = soNgayDaMuon + "/" + maxDays + " ngay";
+
+                    // Nếu lố ngày
+                    if (soNgayDaMuon > maxDays) {
+                        long ngayQuaHan = soNgayDaMuon - maxDays;
+                        phatTiemNang = ngayQuaHan * 5000; // 5000d 
+                        trangThaiNgay += " (DA QUA HAN " + ngayQuaHan + " NGAY)";
+                    }
+                    // =============================================================
+                    
+                    // In ra thông tin chi tiết
+                    System.out.printf("* %s%n", tenSach);
+                    System.out.printf("  - Ma muon: %s%n", tt.getId());
+                    System.out.printf("  - Ngay muon: %s%n", ngayMuonStr);
+                    System.out.printf("  - Trang thai: %s%n", trangThaiNgay); // Mới
+                    
+                    if (phatTiemNang > 0) {
+                        System.out.printf("  - PHAT TAM TINH: %.0fd%n", phatTiemNang); // Mới
+                    }
+                }
+            }
+            
+            if (!timThaySach) {
+                System.out.println("Ban hien khong muon cuon sach nao.");
+            }
+        }
+
     // =================================================================
     // === YÊU CẦU 3: THÊM CÁC CHỨC NĂNG MỚI CHO THỦ THƯ ===
     // =================================================================
@@ -721,98 +815,89 @@ public class QuanLyThuVien implements IQuanLy { // CHANGED: Thêm interface
         }
     }
 
-    // HÃY DÙNG HÀM NÀY ĐỂ THAY THẾ HÀM hienThiSachCuaMotNguoiMuon() CŨ
-
     /**
-     * NEW: Chức năng riêng cho MenuNguoiMuon (Yêu cầu của bạn)
-     * Chỉ hiển thị sách của một người mượn cụ thể.
-     * UPDATED: Thêm logic tính số ngày mượn và cảnh báo phạt
+     * NEW: (Yêu cầu 1a) Hiển thị tất cả thủ thư
      */
-    public void hienThiSachCuaMotNguoiMuon() {
-        System.out.println("\n--- XEM SACH BAN DANG MUON ---");
-        System.out.print("Vui long nhap Ma Nguoi Muon cua ban (VD: NM01): ");
-        String maNM = sc.nextLine().toUpperCase();
+    public void hienThiThuThu() {
+        System.out.println("\n--- DANH SACH THU THU ---");
+        System.out.println(ThuThu.header()); // Gọi hàm header() static từ model
+        System.out.println("-".repeat(80));
         
-        // Bước 1: Tìm người mượn
-        NguoiMuon nm = null;
-        for(int i = 0; i < slNguoiMuon; i++) {
-            if(dsNguoiMuon[i].getMa().equals(maNM)) {
-                nm = dsNguoiMuon[i];
-                break;
-            }
-        }
-        
-        if (nm == null) {
-            System.out.println("Khong tim thay Ma Nguoi Muon: " + maNM);
+        if (slThuThu == 0) {
+            System.out.println("Chua co thu thu nao trong he thong.");
             return;
         }
         
-        // Bước 2: Lấy thẻ của họ và chào mừng
-        TheThuVien theCuaNM = nm.getThe();
-        System.out.println("Chao mung, " + nm.getTen() + ". (The: " + theCuaNM.getMaThe() + ")");
-        
-        // =============================================================
-        // === NEW: LẤY THÔNG TIN NGÀY VÀ LỊCH TRƯỚC ===
-        // =============================================================
-        int maxDays = theCuaNM.getSoNgayMuon(); // Lấy số ngày tối đa (15 hoặc 30)
-        Calendar homNay = Calendar.getInstance(); // Lấy ngày hôm nay
-        
-        System.out.println("Quyen loi cua ban: Toi da " + maxDays + " ngay/lan muon.");
-        // =============================================================
+        for (int i = 0; i < slThuThu; i++) {
+            System.out.println(dsThuThu[i]); // Gọi hàm toString()
+        }
+    }
 
+    /**
+     * NEW: Thêm thủ thư mới (có xác thực "TT01")
+     * CHANGED: Nhận mã của người gọi lệnh (session) để kiểm tra quyền
+     */
+    public void themThuThuMoi(String maNguoiGoiLenh) {
+        System.out.println("\n--- THEM THU THU MOI ---");
         
-        // Bước 3: Lặp qua danh sách mượn
-        System.out.println("\n--- CAC SACH BAN DANG MUON ---");
+        // Bước 1: Xác thực quyền (Logic MỚI của mày)
+        // Nó kiểm tra cái mã được "nhớ" lúc đăng nhập
+        if (!maNguoiGoiLenh.equals("TT01")) {
+            System.out.println("LOI: Ban (Ma: " + maNguoiGoiLenh + ") khong co quyen them thu thu moi.");
+            System.out.println("Chi co Thu Thu Tong (TT01) moi co quyen nay.");
+            return;
+        }
         
-        boolean timThaySach = false;
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        System.out.println("Xac thuc quyen TT01 thanh cong.");
 
-        for (int i = 0; i < slMuon; i++) {
-            TTMuon tt = dsMuon[i];
-            
-            // Kiểm tra: Phải là thẻ của người này VÀ sách chưa trả
-            if (tt.getTheMuon() == theCuaNM && tt.getNgayTra() == null) {
-                timThaySach = true;
-                
-                String tenSach = "Sach khong ro ten";
-                if (tt.getChiTietSach() != null && tt.getChiTietSach().getSach() != null) {
-                    tenSach = tt.getChiTietSach().getSach().getTen();
-                }
-                String ngayMuonStr = sdf.format(tt.getNgayMuon().getTime());
-                
-                // =============================================================
-                // === NEW: TÍNH TOÁN SỐ NGÀY VÀ PHẠT (YÊU CẦU CỦA MÀY) ===
-                // =============================================================
-                
-                // Tính số ngày đã mượn
-                long millisDiff = homNay.getTimeInMillis() - tt.getNgayMuon().getTimeInMillis();
-                long soNgayDaMuon = (millisDiff / (1000 * 60 * 60 * 24)) + 1; // +1 vì tính cả ngày mượn
-                
-                double phatTiemNang = 0;
-                String trangThaiNgay = soNgayDaMuon + "/" + maxDays + " ngay";
+        // Bước 2: Nhập thông tin (Giữ nguyên)
+        int soThuTu = slThuThu + 1;
+        String maMoi = "TT" + String.format("%02d", soThuTu);
+        System.out.println("Ma thu thu moi: " + maMoi);
 
-                // Nếu lố ngày
-                if (soNgayDaMuon > maxDays) {
-                    long ngayQuaHan = soNgayDaMuon - maxDays;
-                    phatTiemNang = ngayQuaHan * 5000; // 5000d 
-                    trangThaiNgay += " (DA QUA HAN " + ngayQuaHan + " NGAY)";
-                }
-                // =============================================================
-                
-                // In ra thông tin chi tiết
-                System.out.printf("* %s%n", tenSach);
-                System.out.printf("  - Ma muon: %s%n", tt.getId());
-                System.out.printf("  - Ngay muon: %s%n", ngayMuonStr);
-                System.out.printf("  - Trang thai: %s%n", trangThaiNgay); // Mới
-                
-                if (phatTiemNang > 0) {
-                    System.out.printf("  - PHAT TAM TINH: %.0fd%n", phatTiemNang); // Mới
-                }
+        System.out.print("Nhap ho ten: ");
+        String ten = sc.nextLine();
+        System.out.print("Nhap tuoi: ");
+        int tuoi = Integer.parseInt(sc.nextLine());
+        System.out.print("Nhap dia chi: ");
+        String diaChi = sc.nextLine();
+        System.out.print("Nhap so gio lam (mac dinh 160): ");
+        int gioLam = 160;
+        try { gioLam = Integer.parseInt(sc.nextLine()); } catch (Exception e) {}
+        System.out.print("Nhap luong gio (mac dinh 50000): ");
+        int luongGio = 50000;
+        try { luongGio = Integer.parseInt(sc.nextLine()); } catch (Exception e) {}
+
+        // Bước 3: Thêm vào mảng
+        ThuThu ttMoi = new ThuThu(maMoi, ten, tuoi, diaChi, gioLam, luongGio);
+        dsThuThu[slThuThu++] = ttMoi;
+        
+        System.out.println("=== THEM THU THU MOI THANH CONG! ===");
+        System.out.println(ttMoi);
+    }
+    /**
+     * NEW:  Hàm "gác cổng"
+     * Kiểm tra xem mã thủ thư có tồn tại trong danh sách không
+     */
+    public boolean xacThucThuThu(String maThuThu) {
+        if (slThuThu == 0) {
+            System.out.println("LOI: Chua co thu thu nao trong he thong.");
+            return false;
+        }
+        
+        for (int i = 0; i < slThuThu; i++) {
+            if (dsThuThu[i].getMa().equals(maThuThu)) {
+                System.out.println("Xac thuc thanh cong. Chao mung " + dsThuThu[i].getTen() + "!");
+                return true; // Tìm thấy
             }
         }
         
-        if (!timThaySach) {
-            System.out.println("Ban hien khong muon cuon sach nao.");
-        }
+        System.out.println("LOI: Ma thu thu \"" + maThuThu + "\" khong ton tai.");
+        return false; // Không tìm thấy
     }
+
+    
+
+    
+    
 }
