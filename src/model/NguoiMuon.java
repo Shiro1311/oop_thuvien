@@ -20,6 +20,11 @@ public class NguoiMuon extends ConNguoi implements IFileString {
     public TheThuVien getThe() { return the; }
     // getTen(), getTuoi(), getDiaChi() đã được kế thừa từ ConNguoi
 
+    // NEW: Thêm hàm này để có thể "đổi thẻ"
+    public void setThe(TheThuVien the) {
+        this.the = the;
+    }
+
     // NEW: Thêm phương thức toFileString
     @Override
     public String toFileString() {

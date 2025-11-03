@@ -25,6 +25,11 @@ public class ThuThu extends ConNguoi implements IFileString {
     public static String header() {
         return String.format("%-6s %-20s %-5s %-20s %-8s %-8s", "MÃ TT", "TÊN", "TUỔI", "ĐỊA CHỈ", "GIỜ", "LƯƠNG");
     }
+
+    // NEW: Thêm 2 hàm set này vào
+    public void setGioLam(int gioLam) { this.gioLam = gioLam; }
+    public void setLuongGio(int luongGio) { this.luongGio = luongGio; }
+    // (setTen, setTuoi, setDiaChi đã được kế thừa từ ConNguoi)
     
     // NEW: Thêm phương thức toFileString
     @Override

@@ -35,6 +35,13 @@ public class MenuThuThu {
             System.out.println("9. Xem danh sach thu thu");
             System.out.println("10. Them thu thu moi (Chi TT01)");
 
+            System.out.println("\n--- Chuc nang khac ---");
+            System.out.println("11. Chinh sua thong tin nguoi muon");
+            System.out.println("12. Chinh sua thong tin sach");
+            System.out.println("13. Chinh sua thong tin thu thu");
+            System.out.println("14. Tim kiem sach, nguoi muon, thu thu");
+            System.out.println("15. Chinh sua the nguoi muon");
+
             System.out.println("\n0. Quay lai menu chinh");
             System.out.print("Chon: ");
             
@@ -69,6 +76,12 @@ public class MenuThuThu {
                 case 8: ql.hienThiNguoiMuon(); break; // (Yêu cầu 3a)
                 case 9: ql.hienThiThuThu(); break;
                 case 10: ql.themThuThuMoi(maThuThuDangNhap); break;
+                // Chuc nang khac
+                case 11: ql.chinhSuaThongTinNguoiMuon(); break;
+                case 12: ql.chinhSuaThongTinSach(); break;
+                case 13: ql.chinhSuaThongTinThuThu(maThuThuDangNhap); break;
+                case 14: ql.timKiem(true); break;
+                case 15: ql.chinhSuaTheNguoiMuon(); break;
                 
                 default: System.out.println("Lua chon khong hop le!");
             }

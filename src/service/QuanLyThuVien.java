@@ -896,7 +896,424 @@ public class QuanLyThuVien implements IQuanLy { // CHANGED: Thêm interface
         return false; // Không tìm thấy
     }
 
-    
+    // HÃY DÁN TOÀN BỘ 4 HÀM NÀY VÀO CUỐI FILE QuanLyThuVien.java
+
+    // =================================================================
+    // === BIG UPDATE: THÊM CHỨC NĂNG SỬA (EDIT) ===
+    // =================================================================
+
+    /**
+     * NEW: (Yêu cầu 11) Chỉnh sửa thông tin người mượn
+     * Dùng chung cho cả Thủ Thư và Người Mượn
+     */
+    public void chinhSuaThongTinNguoiMuon() {
+        System.out.println("\n--- CHINH SUA THONG TIN NGUOI MUON ---");
+        System.out.print("Nhap Ma Nguoi Muon (VD: NM01) ban muon sua: ");
+        String maNM = sc.nextLine().toUpperCase();
+        
+        // Bước 1: Tìm người mượn
+        NguoiMuon nm = null;
+        for(int i = 0; i < slNguoiMuon; i++) {
+            if(dsNguoiMuon[i].getMa().equals(maNM)) {
+                nm = dsNguoiMuon[i];
+                break;
+            }
+        }
+        
+        if (nm == null) {
+            System.out.println("Khong tim thay Nguoi Muon voi ma: " + maNM);
+            return;
+        }
+
+        System.out.println("Tim thay: " + nm.getTen() + ". (Bo trong de giu nguyen thong tin cu)");
+
+        // Bước 2: Sửa Tên
+        System.out.printf("Nhap ten moi (Cu: %s): ", nm.getTen());
+        String tenMoi = sc.nextLine();
+        if (!tenMoi.isEmpty()) {
+            nm.setTen(tenMoi);
+            System.out.println("-> Da cap nhat ten.");
+        }
+
+        // Bước 3: Sửa Tuổi
+        System.out.printf("Nhap tuoi moi (Cu: %d): ", nm.getTuoi());
+        String tuoiMoiStr = sc.nextLine();
+        if (!tuoiMoiStr.isEmpty()) {
+            try {
+                int tuoiMoi = Integer.parseInt(tuoiMoiStr);
+                nm.setTuoi(tuoiMoi);
+                System.out.println("-> Da cap nhat tuoi.");
+            } catch (Exception e) {
+                System.out.println("-> Tuoi nhap vao khong hop le. Khong cap nhat.");
+            }
+        }
+
+        // Bước 4: Sửa Địa chỉ
+        System.out.printf("Nhap dia chi moi (Cu: %s): ", nm.getDiaChi());
+        String diaChiMoi = sc.nextLine();
+        if (!diaChiMoi.isEmpty()) {
+            nm.setDiaChi(diaChiMoi);
+            System.out.println("-> Da cap nhat dia chi.");
+        }
+        
+        // Ghi chú: Không cho sửa Thẻ Thư Viện vì đây là nghiệp vụ phức tạp.
+        System.out.println("=== CAP NHAT THONG TIN THANH CONG! ===");
+    }
+
+    /**
+     * NEW: (Yêu cầu 12) Chỉnh sửa thông tin sách
+     */
+    public void chinhSuaThongTinSach() {
+        System.out.println("\n--- CHINH SUA THONG TIN SACH ---");
+        System.out.print("Nhap Ma Sach (VD: TL0001) ban muon sua: ");
+        String maSach = sc.nextLine().toUpperCase();
+        
+        // Bước 1: Tìm sách
+        Sach sach = null;
+        for(int i = 0; i < slSach; i++) {
+            if(dsSach[i].getMa().equals(maSach)) {
+                sach = dsSach[i];
+                break;
+            }
+        }
+        
+        if (sach == null) {
+            System.out.println("Khong tim thay Sach voi ma: " + maSach);
+            return;
+        }
+
+        System.out.println("Tim thay: " + sach.getTen() + ". (Bo trong de giu nguyen thong tin cu)");
+
+        // Bước 2: Sửa Tên
+        System.out.printf("Nhap ten moi (Cu: %s): ", sach.getTen());
+        String tenMoi = sc.nextLine();
+        if (!tenMoi.isEmpty()) {
+            sach.setTen(tenMoi);
+            System.out.println("-> Da cap nhat ten.");
+        }
+
+        // Bước 3: Sửa Năm XB
+        System.out.printf("Nhap nam XB moi (Cu: %d): ", sach.getNamXB());
+        String namMoiStr = sc.nextLine();
+        if (!namMoiStr.isEmpty()) {
+            try {
+                int namMoi = Integer.parseInt(namMoiStr);
+                sach.setNamXB(namMoi);
+                System.out.println("-> Da cap nhat nam XB.");
+            } catch (Exception e) {
+                System.out.println("-> Nam nhap vao khong hop le. Khong cap nhat.");
+            }
+        }
+
+        // Bước 4: Sửa Số trang
+        System.out.printf("Nhap so trang moi (Cu: %d): ", sach.getSoTrang());
+        String trangMoiStr = sc.nextLine();
+        if (!trangMoiStr.isEmpty()) {
+            try {
+                int trangMoi = Integer.parseInt(trangMoiStr);
+                sach.setSoTrang(trangMoi);
+                System.out.println("-> Da cap nhat so trang.");
+            } catch (Exception e) {
+                System.out.println("-> So trang nhap vao khong hop le. Khong cap nhat.");
+            }
+        }
+        
+        // Ghi chú: Không cho sửa Tác Giả, NXB vì nghiệp vụ phức tạp.
+        System.out.println("=== CAP NHAT THONG TIN SACH THANH CONG! ===");
+    }
+
+    /**
+     * NEW: (Yêu cầu 13) Chỉnh sửa thông tin thủ thư
+     * Yêu cầu mã thủ thư đang đăng nhập (session)
+     */
+    public void chinhSuaThongTinThuThu(String maThuThuDangNhap) {
+        System.out.println("\n--- CHINH SUA THONG TIN THU THU ---");
+        System.out.print("Nhap Ma Thu Thu (VD: TT01) ban muon sua: ");
+        String maTT = sc.nextLine().toUpperCase();
+        
+        // Bước 1: Tìm Thủ Thư cần sửa
+        ThuThu ttCanSua = null;
+        for(int i = 0; i < slThuThu; i++) {
+            if(dsThuThu[i].getMa().equals(maTT)) {
+                ttCanSua = dsThuThu[i];
+                break;
+            }
+        }
+        
+        if (ttCanSua == null) {
+            System.out.println("Khong tim thay Thu Thu voi ma: " + maTT);
+            return;
+        }
+
+        // Bước 2: Xác thực quyền
+        // Quy tắc: 1. Bạn được sửa chính mình. 2. TT01 được sửa mọi người.
+        boolean duocPhepSua = false;
+        if (ttCanSua.getMa().equals(maThuThuDangNhap)) {
+            duocPhepSua = true; // Được tự sửa mình
+            System.out.println("Ban dang chinh sua thong tin cua chinh minh.");
+        } else if (maThuThuDangNhap.equals("TT01")) {
+            duocPhepSua = true; // TT01 được sửa người khác
+            System.out.println("Thu Thu Tong (TT01) dang chinh sua thong tin cua " + ttCanSua.getTen());
+        }
+
+        if (!duocPhepSua) {
+            System.out.println("LOI: Ban (Ma: " + maThuThuDangNhap + ") khong co quyen sua thong tin cua " + maTT);
+            return;
+        }
+
+        // Bước 3: Sửa thông tin
+        System.out.println("Tim thay: " + ttCanSua.getTen() + ". (Bo trong de giu nguyen thong tin cu)");
+        
+        System.out.printf("Nhap ten moi (Cu: %s): ", ttCanSua.getTen());
+        String tenMoi = sc.nextLine();
+        if (!tenMoi.isEmpty()) ttCanSua.setTen(tenMoi);
+
+        System.out.printf("Nhap tuoi moi (Cu: %d): ", ttCanSua.getTuoi());
+        String tuoiMoiStr = sc.nextLine();
+        if (!tuoiMoiStr.isEmpty()) {
+            try { ttCanSua.setTuoi(Integer.parseInt(tuoiMoiStr)); } catch (Exception e) {}
+        }
+
+        System.out.printf("Nhap dia chi moi (Cu: %s): ", ttCanSua.getDiaChi());
+        String diaChiMoi = sc.nextLine();
+        if (!diaChiMoi.isEmpty()) ttCanSua.setDiaChi(diaChiMoi);
+
+        // Chỉ TT01 mới được sửa Lương (logic thêm)
+        if (maThuThuDangNhap.equals("TT01")) {
+             // Try to read current 'gioLam' reflectively (try common field names), fallback to 0
+             int curGioVal = 0;
+             try {
+                 java.lang.reflect.Field f = ttCanSua.getClass().getDeclaredField("gioLam");
+                 f.setAccessible(true);
+                 curGioVal = f.getInt(ttCanSua);
+             } catch (Exception e1) {
+                 try {
+                     java.lang.reflect.Field f2 = ttCanSua.getClass().getDeclaredField("soGioLam");
+                     f2.setAccessible(true);
+                     curGioVal = f2.getInt(ttCanSua);
+                 } catch (Exception e2) {
+                     // leave default 0
+                 }
+             }
+             System.out.printf("Nhap gio lam moi (Cu: %d): ", curGioVal);
+             String gioMoiStr = sc.nextLine();
+             if (!gioMoiStr.isEmpty()) {
+                 try { ttCanSua.setGioLam(Integer.parseInt(gioMoiStr)); } catch (Exception e) {}
+             }
+             
+             // Try to read current 'luongGio' reflectively (try common field names), fallback to 0
+             int curLuongVal = 0;
+             try {
+                 java.lang.reflect.Field f3 = ttCanSua.getClass().getDeclaredField("luongGio");
+                 f3.setAccessible(true);
+                 curLuongVal = f3.getInt(ttCanSua);
+             } catch (Exception e1) {
+                 try {
+                     java.lang.reflect.Field f4 = ttCanSua.getClass().getDeclaredField("luong");
+                     f4.setAccessible(true);
+                     curLuongVal = f4.getInt(ttCanSua);
+                 } catch (Exception e2) {
+                     // leave default 0
+                 }
+             }
+             System.out.printf("Nhap luong gio moi (Cu: %d): ", curLuongVal);
+             String luongMoiStr = sc.nextLine();
+             if (!luongMoiStr.isEmpty()) {
+                 try { ttCanSua.setLuongGio(Integer.parseInt(luongMoiStr)); } catch (Exception e) {}
+             }
+        } else {
+            System.out.println("(Ban khong co quyen thay doi Gio Lam va Luong Gio. Chi TT01 moi co the.)");
+        }
+
+        System.out.println("=== CAP NHAT THONG TIN THU THU THANH CONG! ===");
+    }
+
+    // =================================================================
+    // === BIG UPDATE: THÊM CHỨC NĂNG TÌM KIẾM (SEARCH) ===
+    // =================================================================
+
+    /**
+     * NEW: (Yêu cầu 14) Hàm tìm kiếm TỔNG QUÁT
+     * Dùng boolean 'isThuThu' để phân quyền 
+     */
+    public void timKiem(boolean isThuThu) {
+        // Nếu là Người Mượn, chỉ cho tìm sách
+        if (!isThuThu) {
+            System.out.println("\n--- TIM KIEM SACH ---");
+            timKiemSachHelper(); // Gọi thẳng hàm tìm sách
+            return;
+        }
+        
+        // Nếu là Thủ Thư, cho thấy menu đầy đủ
+        while (true) {
+            System.out.println("\n--- MENU TIM KIEM (THU THU) ---");
+            System.out.println("1. Tim kiem Sach");
+            System.out.println("2. Tim kiem Nguoi Muon");
+            System.out.println("3. Tim kiem Thu Thu");
+            System.out.println("0. Quay lai Menu Thu Thu");
+            System.out.print("Chon: ");
+            
+            int c = -1;
+            try { c = Integer.parseInt(sc.nextLine()); } catch (Exception e) {}
+            
+            if (c == 0) break;
+            
+            switch(c) {
+                case 1: timKiemSachHelper(); break;
+                case 2: timKiemNguoiMuonHelper(); break;
+                case 3: timKiemThuThuHelper(); break;
+                default: System.out.println("Lua chon khong hop le.");
+            }
+        }
+    }
+
+    /**
+     * NEW: (Yêu cầu 15) Chỉnh sửa (Thay đổi) Thẻ Thư Viện
+     * Đây là nghiệp vụ phức tạp
+     */
+    public void chinhSuaTheNguoiMuon() {
+        System.out.println("\n--- THAY DOI LOAI THE THU VIEN ---");
+        System.out.print("Nhap Ma Nguoi Muon (VD: NM01) ban muon doi the: ");
+        String maNM = sc.nextLine().toUpperCase();
+        
+        // Bước 1: Tìm người mượn
+        NguoiMuon nm = null;
+        for(int i = 0; i < slNguoiMuon; i++) {
+            if(dsNguoiMuon[i].getMa().equals(maNM)) {
+                nm = dsNguoiMuon[i];
+                break;
+            }
+        }
+        
+        if (nm == null) {
+            System.out.println("Khong tim thay Nguoi Muon: " + maNM);
+            return;
+        }
+
+        TheThuVien theCu = nm.getThe();
+        System.out.println("Nguoi muon: " + nm.getTen());
+        System.out.println("The hien tai: " + theCu.getMaThe() + " (Loai " + theCu.getLoai() + ")");
+
+        // Bước 2: Xác định thẻ mới
+        TheThuVien theMoi;
+        String maTheMoi = String.format("%04d", slThe + 1); // Mã thẻ mới, đảm bảo là duy nhất
+
+        if (theCu instanceof LoaiA) {
+            System.out.print("Ban co muon doi sang LOAI B khong? (y/n): ");
+            theMoi = new LoaiB(maTheMoi);
+        } else {
+            System.out.print("Ban co muon doi sang LOAI A khong? (y/n): ");
+            theMoi = new LoaiA(maTheMoi);
+        }
+        
+        String confirm = sc.nextLine().toLowerCase();
+        if (!confirm.equals("y")) {
+            System.out.println("Huy bo thao tac.");
+            return;
+        }
+
+        // Bước 3: Bắt đầu thay thế (Logic mệt mỏi)
+        
+        // 3a. Thêm thẻ mới vào mảng dsThe (cho nó 1 chỗ)
+        dsThe[slThe++] = theMoi;
+        
+        // 3b. Cập nhật NguoiMuon (Đưa chìa khóa mới cho chủ nhà)
+        nm.setThe(theMoi); // (Hàm setThe() mày vừa thêm)
+
+        // 3c. Cập nhật TẤT CẢ phiếu mượn (còn và đã trả)
+        // (Bảo tất cả các "lần quẹt thẻ" cũ giờ phải trỏ vào cái thẻ mới)
+        int countMuon = 0;
+        for (int i = 0; i < slMuon; i++) {
+            if (dsMuon[i].getTheMuon() == theCu) {
+                dsMuon[i].setTheMuon(theMoi); // (Hàm setTheMuon() mày vừa thêm)
+                countMuon++;
+            }
+        }
+
+        // 3d. Xóa thẻ cũ khỏi mảng dsThe (Dồn mảng)
+        int indexTheCu = -1;
+        for (int i = 0; i < slThe; i++) { 
+            if (dsThe[i] == theCu) {
+                indexTheCu = i;
+                break;
+            }
+        }
+        
+        if (indexTheCu != -1) {
+            // Dồn mảng (lấy thằng cuối đè lên thằng cũ)
+            dsThe[indexTheCu] = dsThe[slThe - 1]; // Lấy thằng cuối (là thẻ mới) đè lên
+            // À không, thẻ mới đã ở cuối rồi, chỉ cần dồn
+            for (int i = indexTheCu; i < slThe - 1; i++) {
+                dsThe[i] = dsThe[i + 1];
+            }
+            slThe--; // Giảm số lượng
+        }
+
+        System.out.println("=== DOI THE THANH CONG! ===");
+        System.out.println("Ma the cu: " + theCu.getMaThe() + " (Da xoa)");
+        System.out.println("Ma the moi: " + theMoi.getMaThe() + " (Loai " + theMoi.getLoai() + ")");
+        System.out.println("Da cap nhat " + countMuon + " phieu muon lien quan.");
+    }
+
+    // --- CÁC HÀM HELPER CHO VIỆC TÌM KIẾM ---
+
+    private void timKiemSachHelper() {
+        System.out.print("Nhap ten sach can tim: ");
+        String keyword = sc.nextLine().toLowerCase().trim();
+        boolean timThay = false;
+        
+        System.out.println("\n--- KET QUA TIM KIEM SACH ---");
+        System.out.println(Sach.header());
+        System.out.println("-".repeat(90));
+
+        for(int i = 0; i < slSach; i++) {
+            if(dsSach[i].getTen().toLowerCase().contains(keyword)) {
+                dsSach[i].hienThi();
+                timThay = true;
+            }
+        }
+        if (!timThay) System.out.println("Khong tim thay sach nao co ten chua \"" + keyword + "\"");
+    }
+
+    private void timKiemNguoiMuonHelper() {
+        System.out.print("Nhap ten nguoi muon can tim: ");
+        String keyword = sc.nextLine().toLowerCase().trim();
+        boolean timThay = false;
+
+        System.out.println("\n--- KET QUA TIM KIEM NGUOI MUON ---");
+        System.out.println(String.format("%-6s %-20s %-5s %-15s %-8s", 
+                            "MA NM", "TEN", "TUOI", "DIA CHI", "MA THE"));
+        System.out.println("-".repeat(65));
+
+        for(int i = 0; i < slNguoiMuon; i++) {
+            if(dsNguoiMuon[i].getTen().toLowerCase().contains(keyword)) {
+                NguoiMuon nm = dsNguoiMuon[i];
+                System.out.printf("%-6s %-20s %-5d %-15s %-8s%n",
+                    nm.getMa(), nm.getTen(), nm.getTuoi(), nm.getDiaChi(),
+                    nm.getThe().getMaThe());
+                timThay = true;
+            }
+        }
+        if (!timThay) System.out.println("Khong tim thay nguoi muon nao co ten chua \"" + keyword + "\"");
+    }
+
+    private void timKiemThuThuHelper() {
+        System.out.print("Nhap ten thu thu can tim: ");
+        String keyword = sc.nextLine().toLowerCase().trim();
+        boolean timThay = false;
+
+        System.out.println("\n--- KET QUA TIM KIEM THU THU ---");
+        System.out.println(ThuThu.header());
+        System.out.println("-".repeat(80));
+
+        for(int i = 0; i < slThuThu; i++) {
+            if(dsThuThu[i].getTen().toLowerCase().contains(keyword)) {
+                System.out.println(dsThuThu[i]);
+                timThay = true;
+            }
+        }
+        if (!timThay) System.out.println("Khong tim thay thu thu nao co ten chua \"" + keyword + "\"");
+    }
 
     
     

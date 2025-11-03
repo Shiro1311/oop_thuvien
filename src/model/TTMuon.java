@@ -34,6 +34,11 @@ public class TTMuon implements IFileString {
         return sdf.format(cal.getTime());
     }
 
+    // NEW: Thêm hàm này để cập nhật phiếu mượn
+    public void setTheMuon(TheThuVien the) {
+        this.theMuon = the;
+    }
+
     // NEW: Thêm phương thức toFileString
     @Override
     public String toFileString() {

@@ -45,6 +45,11 @@ public class Sach implements IFileString {
         return "MA SACH     TEN SACH               TAC GIA         NXB       NAM  TRANG";
     }
 
+    // NEW: Thêm 3 hàm set này vào
+    public void setTen(String ten) { this.ten = ten; }
+    public void setNamXB(int namXB) { this.namXB = namXB; }
+    public void setSoTrang(int soTrang) { this.soTrang = soTrang; }
+
     // NEW: Thêm phương thức toFileString
     @Override
     public String toFileString() {
