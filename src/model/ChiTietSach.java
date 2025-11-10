@@ -33,14 +33,26 @@ public class ChiTietSach implements IFileString {
 
     @Override
     public String toString() {
-        String maSach = sach != null ? sach.getMa() : "Khong xac dinh";
-        String viTriStr = viTri != null ? viTri.getViTri() : "Khong xac dinh";
-        String trangThai = theMuon == null ? "Chua muon" : "Dang muon";
-        return String.format("%-8s %-8s %-20s %-10s", id, maSach, viTriStr, trangThai);
+        String maSach = "N/A";
+        String tenSach = "N/A";
+        
+        if (sach != null) {
+            maSach = sach.getMa();
+            tenSach = sach.getTen(); // <-- Lấy tên đầy đủ
+        }
+
+        String viTriStr = (viTri != null) ? viTri.getViTri() : "N/A";
+        String trangThai = (theMuon == null) ? "Trong kho" : "Dang muon";
+        
+        // In ra với cột tên sách mới
+        return String.format("%-8s %-10s %-40s %-20s %-10s", 
+                            id, maSach, tenSach, viTriStr, trangThai);
     }
 
     public static String header() {
-        return String.format("%-8s %-8s %-20s %-10s", "ID CTS", "MA SACH", "VI TRI", "TRANG THAI");
+        // Thêm cột TÊN SÁCH
+        return String.format("%-8s %-10s %-40s %-20s %-10s", 
+                            "ID CTS", "MA SACH", "TEN SACH (Day du)", "VI TRI", "TRANG THAI");
     }
 
     // NEW: Thêm phương thức toFileString

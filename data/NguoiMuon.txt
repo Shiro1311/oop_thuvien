@@ -1,4 +1,4 @@
-NM01;Tran Van B;22;Hai Phong;0008
+NM01;Tran Van B;22;Hai Phong;0001
 NM02;Le Thi C;23;An Giang;0002
 NM03;trịnh minh toàn;12;Bình Dương;0003
 NM04;lâm văn nên;31;tây  ninh;0004

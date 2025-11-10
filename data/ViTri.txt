@@ -17,3 +17,6 @@ VT16;Khu 4;Ke 4;Hang 2
 VT17;Khu 5;Ke 1;Hang 1
 VT18;Khu 5;Ke 2;Hang 2
 VT19;Khu 5;Ke 3;Hang 1
+VT20;Khu 5;Ke 4;Hang 2
+VT21;Khu 6;Ke 1;Hang 1
+VT22;Khu 6;Ke 2;Hang 2

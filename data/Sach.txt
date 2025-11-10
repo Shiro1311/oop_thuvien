@@ -4,3 +4,4 @@ TL0016;Sapiens;TG15;NXB03;2014;500
 TL0004;đắc nhân tâm;TG05;NXB04;2021;200
 TL0005;hạt giống tâm hồn tập 1;TG06;NXB05;2018;250
 TL0006;hạt giống tâm hồn tập 2;TG07;NXB06;2015;200
+TL0007;Ore o Suki Nano wa Omae Dake ka yo;TG08;NXB07;2016;200

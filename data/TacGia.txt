@@ -5,3 +5,4 @@ TG15;Yuval Noah Harari
 TG05;Dale Carnegie
 TG06;nhiều tác giả
 TG07;Trịnh Minh Toàn
+TG08;Rakuda
