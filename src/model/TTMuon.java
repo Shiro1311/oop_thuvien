@@ -9,15 +9,17 @@ public class TTMuon implements IFileString {
     private TheThuVien theMuon;
     private Calendar ngayMuon;
     private Calendar ngayTra;
+    private String maThuThu;
 
     public TTMuon() {}
 
-    public TTMuon(String id, ChiTietSach chiTietSach, TheThuVien theMuon, Calendar ngayMuon, Calendar ngayTra) {
+    public TTMuon(String id, ChiTietSach chiTietSach, TheThuVien theMuon, Calendar ngayMuon, Calendar ngayTra, String maThuThu) {
         this.id = id;
         this.chiTietSach = chiTietSach;
         this.theMuon = theMuon;
         this.ngayMuon = ngayMuon;
         this.ngayTra = ngayTra;
+        this.maThuThu = maThuThu;
     }
 
     public String getId() { return id; }
@@ -25,6 +27,8 @@ public class TTMuon implements IFileString {
     public TheThuVien getTheMuon() { return theMuon; }
     public Calendar getNgayMuon() { return ngayMuon; }
     public Calendar getNgayTra() { return ngayTra; }
+    public String getMaThuThu() { return maThuThu; }
+    
     public void setNgayTra(Calendar ngayTra) { this.ngayTra = ngayTra; }
     
     // NEW: Hàm trợ giúp để format Calendar (phải giống hệt FileService)
@@ -49,6 +53,6 @@ public class TTMuon implements IFileString {
         String maThe = (theMuon != null) ? theMuon.getMaThe() : "null";
         
         return id + ";" + idCTS + ";" + maThe + ";" +
-               formatCalendar(ngayMuon) + ";" + formatCalendar(ngayTra);
+               formatCalendar(ngayMuon) + ";" + formatCalendar(ngayTra) + ";" + maThuThu;
     }
 }

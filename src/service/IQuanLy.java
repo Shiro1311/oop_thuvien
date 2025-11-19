@@ -7,8 +7,8 @@ package service;
 public interface IQuanLy {
     void themSach();
     void themNguoiMuon();
-    void muonSach();
-    void traSach();
+    void muonSach(String maThuThu);
+    void traSach(String maThuThu);
     void hienThiSach();
     
     // Bạn có thể thêm các hàm khác vào đây

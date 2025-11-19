@@ -1,55 +1,62 @@
+// THAY THẾ TOÀN BỘ file PhieuTraSach.java BẰNG CODE NÀY
+
 package model;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-// CHANGED: Thêm implements IFileString
+// CHANGED: Thêm implements IFileString (nếu chưa có)
 public class PhieuTraSach implements IFileString {
     private String maPhieu;
     private TTMuon ttMuon;
     private Calendar ngayTra;
     private double tienPhat;
+    private String maThuThu; 
 
     public PhieuTraSach() {}
 
-    public PhieuTraSach(String maPhieu, TTMuon ttMuon, Calendar ngayTra, double tienPhat) {
+    // CHANGED: Constructor mới
+    public PhieuTraSach(String maPhieu, TTMuon ttMuon, Calendar ngayTra, double tienPhat, String maThuThu) {
         this.maPhieu = maPhieu;
         this.ttMuon = ttMuon;
         this.ngayTra = ngayTra;
         this.tienPhat = tienPhat;
+        this.maThuThu = maThuThu; 
     }
 
     public String getMaPhieu() { return maPhieu; }
     public TTMuon getTTMuon() { return ttMuon; }
     public Calendar getNgayTra() { return ngayTra; }
     public double getTienPhat() { return tienPhat; }
+    public String getMaThuThu() { return maThuThu; } 
 
+    // CHANGED: Cập nhật hàm hiển thị để show Thủ thư
     @Override
     public String toString() {
+        if (ttMuon == null) {
+            return String.format("%-10s %-15s %-12s %.0fd %-10s", maPhieu, "N/A", "N/A", tienPhat, maThuThu);
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        String ngayTraStr = ngayTra != null ? sdf.format(ngayTra.getTime()) : "Chua tra";
-        String idMuon = ttMuon != null ? ttMuon.getId() : "null"; // Sửa lỗi nếu ttMuon là null
-        return String.format("%-10s %-15s %-12s %.0fd", maPhieu, idMuon, ngayTraStr, tienPhat);
+        return String.format("%-10s %-15s %-12s %.0fd %-10s",
+                maPhieu, ttMuon.getId(), sdf.format(ngayTra.getTime()), tienPhat, maThuThu);
     }
 
+    // CHANGED: Cập nhật header
     public static String header() {
-        return String.format("%-10s %-15s %-12s %s", "MA PHIEU", "MA MUON", "NGAY TRA", "PHAT");
+        return String.format("%-10s %-15s %-12s %-8s %s", "MA PHIEU", "MA MUON", "NGAY TRA", "PHAT", "TT NHAN");
     }
-
-    // NEW: Hàm trợ giúp để format Calendar (phải giống hệt FileService)
+    
+    // Cập nhật toFileString()
+    @Override
+    public String toFileString() {
+        String idTTMuon = (ttMuon == null) ? "null" : ttMuon.getId();
+        
+        return maPhieu + ";" + idTTMuon + ";" + formatCalendar(ngayTra) + ";" + tienPhat + ";" + maThuThu;
+    }
+    
+    // (Dán lại hàm formatCalendar() nếu bị mất)
     private String formatCalendar(Calendar cal) {
         if (cal == null) return "null";
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         return sdf.format(cal.getTime());
-    }
-
-    // NEW: Thêm phương thức toFileString
-    @Override
-    public String toFileString() {
-        // Định dạng phải khớp với logic đọc của FileService:
-        // maPhieu;idTTMuon;ngayTra;tienPhat
-        
-        String idTTMuon = (ttMuon == null) ? "null" : ttMuon.getId();
-        
-        return maPhieu + ";" + idTTMuon + ";" + formatCalendar(ngayTra) + ";" + tienPhat;
     }
 }

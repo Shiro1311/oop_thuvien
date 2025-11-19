@@ -28,24 +28,27 @@ public class MenuThuThu {
             System.out.println("4. Xem tat ca sach dang duoc muon"); // (Yêu cầu 3b)
             System.out.println("5. Xem chi tiet muon cua mot nguoi"); // (Yêu cầu 3c)
             System.out.println("6. Xem tat ca phieu tra");
+            System.out.println("7. Mượn sách");
+            System.out.println("8. Trả sách");
             
             System.out.println("\n--- Quan Ly Nhân Sự ---");
-            System.out.println("7. Them nguoi muon moi"); // (Yêu cầu 1)
-            System.out.println("8. Xem danh sach nguoi muon"); // (Yêu cầu 3a)
-            System.out.println("9. Xem danh sach thu thu");
-            System.out.println("10. Them thu thu moi (Chi TT01)");
+            System.out.println("9. Them nguoi muon moi"); // (Yêu cầu 1)
+            System.out.println("10. Xem danh sach nguoi muon"); // (Yêu cầu 3a)
+            System.out.println("11. Xem danh sach thu thu");
+            System.out.println("12. Them thu thu moi (Chi TT01)");
 
             System.out.println("\n--- Chuc nang khac ---");
-            System.out.println("11. Chinh sua thong tin nguoi muon");
-            System.out.println("12. Chinh sua thong tin sach");
-            System.out.println("13. Chinh sua thong tin thu thu");
-            System.out.println("14. Tim kiem sach, nguoi muon, thu thu");
-            System.out.println("15. Chinh sua the nguoi muon");
+            System.out.println("13. Chinh sua thong tin nguoi muon");
+            System.out.println("14. Chinh sua thong tin sach");
+            System.out.println("15. Chinh sua thong tin thu thu");
+            System.out.println("16. Tim kiem sach, nguoi muon, thu thu");
+            System.out.println("17. Chinh sua the nguoi muon");
 
             System.out.println("\n--- Thong Ke & Bao Cao ---");
-            System.out.println("16. Thong ke tong quan");
-            System.out.println("17. Thong ke sach qua han");
-            System.out.println("18. Thong ke tien phat");
+            System.out.println("18. Thong ke tong quan");
+            System.out.println("19. Thong ke sach qua han");
+            System.out.println("20. Thong ke tien phat");
+            System.out.println("21. Thong ke lich su phuc vu");
 
             System.out.println("\n0. Quay lai menu chinh");
             System.out.print("Chon: ");
@@ -75,22 +78,24 @@ public class MenuThuThu {
                 case 4: ql.hienThiSachDangMuon(); break; // (Yêu cầu 3b)
                 case 5: ql.xemChiTietMuonCuaNguoiMuon(); break; // (Yêu cầu 3c)
                 case 6: ql.hienThiPhieuTra(); break;
-                
+                case 7: ql.muonSach(maThuThuDangNhap); break;
+                case 8: ql.traSach(maThuThuDangNhap); break;
                 // QL Nguoi Muon
-                case 7: ql.themNguoiMuon(); break; // (Yêu cầu 1)
-                case 8: ql.hienThiNguoiMuon(); break; // (Yêu cầu 3a)
-                case 9: ql.hienThiThuThu(); break;
-                case 10: ql.themThuThuMoi(maThuThuDangNhap); break;
+                case 9: ql.themNguoiMuon(); break; // (Yêu cầu 1)
+                case 10: ql.hienThiNguoiMuon(); break; // (Yêu cầu 3a)
+                case 11: ql.hienThiThuThu(); break;
+                case 12: ql.themThuThuMoi(maThuThuDangNhap); break;
                 // Chuc nang khac
-                case 11: ql.chinhSuaThongTinNguoiMuon(); break;
-                case 12: ql.chinhSuaThongTinSach(); break;
-                case 13: ql.chinhSuaThongTinThuThu(maThuThuDangNhap); break;
-                case 14: ql.timKiem(true); break;
-                case 15: ql.chinhSuaTheNguoiMuon(); break;
+                case 13: ql.chinhSuaThongTinNguoiMuon(); break;
+                case 14: ql.chinhSuaThongTinSach(); break;
+                case 15: ql.chinhSuaThongTinThuThu(maThuThuDangNhap); break;
+                case 16: ql.timKiem(true); break;
+                case 17: ql.chinhSuaTheNguoiMuon(); break;
                 // Thong Ke & Bao Cao
-                case 16: ql.thongKeTongQuan(); break;
-                case 17: ql.thongKeSachQuaHan(); break;
-                case 18: ql.thongKeTienPhat(); break;
+                case 18: ql.thongKeTongQuan(); break;
+                case 19: ql.thongKeSachQuaHan(); break;
+                case 20: ql.thongKeTienPhat(); break;
+                case 21: ql.thongKeLichSuPhucVu(); break;
                 
                 default: System.out.println("Lua chon khong hop le!");
             }

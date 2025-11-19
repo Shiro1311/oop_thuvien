@@ -5,9 +5,7 @@ import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.TimeZone;
-
-import model.*; // Import tất cả các model
+import model.*;
 
 /**
  * NEW:
@@ -258,6 +256,7 @@ public class FileService {
     }
 
     // 9. Đọc TTMuon (Phụ thuộc ChiTietSach, TheThuVien)
+    // 9. Đọc TTMuon (CẬP NHẬT)
     public static DuLieuDoc<TTMuon> docTTMuon(ChiTietSach[] dsCTS, int slCTS, TheThuVien[] dsThe, int slThe) {
         TTMuon[] ds = new TTMuon[MAX_SIZE];
         int count = 0;
@@ -268,15 +267,24 @@ public class FileService {
             String line;
             while ((line = reader.readLine()) != null && count < MAX_SIZE) {
                 String[] parts = line.split(";");
-                if (parts.length == 5) {
-                    // id;idCTS;maTheMuon;ngayMuon;ngayTra
+                // Chấp nhận cả file cũ (5 phần) và file mới (6 phần)
+                if (parts.length >= 5) {
                     ChiTietSach cts = QuanLyThuVien.timCTSById(parts[1], dsCTS, slCTS);
                     TheThuVien the = QuanLyThuVien.timTheById(parts[2], dsThe, slThe);
                     Calendar ngayMuon = parseCalendar(parts[3]);
                     Calendar ngayTra = parseCalendar(parts[4]);
                     
-                    TTMuon tt = new TTMuon(parts[0], cts, the, ngayMuon, ngayTra);
-                    ds[count++] = tt;
+                    // Xử lý tương thích ngược: Nếu là file cũ chưa có mã TT thì gán "N/A"
+                    String maThuThu = "N/A"; 
+                    if (parts.length >= 6) {
+                        maThuThu = parts[5];
+                    }
+                    
+                    if (cts != null && the != null && ngayMuon != null) {
+                        // Gọi Constructor mới
+                        TTMuon tt = new TTMuon(parts[0], cts, the, ngayMuon, ngayTra, maThuThu);
+                        ds[count++] = tt;
+                    }
                 }
             }
         } catch (IOException | ParseException e) {
@@ -286,6 +294,7 @@ public class FileService {
     }
 
     // 10. Đọc Phiếu Trả (Phụ thuộc TTMuon)
+    // 10. Đọc Phiếu Trả (CẬP NHẬT ĐỂ AN TOÀN HƠN)
     public static DuLieuDoc<PhieuTraSach> docPhieuTra(TTMuon[] dsMuon, int slMuon) {
         PhieuTraSach[] ds = new PhieuTraSach[MAX_SIZE];
         int count = 0;
@@ -296,13 +305,21 @@ public class FileService {
             String line;
             while ((line = reader.readLine()) != null && count < MAX_SIZE) {
                 String[] parts = line.split(";");
-                if (parts.length == 4) {
-                    // maPhieu;idTTMuon;ngayTra;tienPhat
+                // Chấp nhận đọc nếu có ít nhất 4 phần (format cũ)
+                if (parts.length >= 4) {
                     TTMuon tt = QuanLyThuVien.timTTMuonById(parts[1], dsMuon, slMuon);
                     Calendar ngayTra = parseCalendar(parts[2]);
                     double phat = Double.parseDouble(parts[3]);
                     
-                    ds[count++] = new PhieuTraSach(parts[0], tt, ngayTra, phat);
+                    // Xử lý cột thứ 5 (MaThuThu) nếu có
+                    String maThuThu = "N/A";
+                    if (parts.length >= 5) {
+                        maThuThu = parts[4];
+                    }
+
+                    // Nếu tt không tìm thấy (do dsMuon chưa load đủ), ta vẫn có thể load phiếu trả với tt=null để hiển thị log
+                    // Tuy nhiên logic chuẩn là phải có tt. Ở đây ta tạm chấp nhận load vào.
+                    ds[count++] = new PhieuTraSach(parts[0], tt, ngayTra, phat, maThuThu);
                 }
             }
         } catch (IOException | ParseException | NumberFormatException e) {

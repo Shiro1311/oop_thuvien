@@ -17,12 +17,12 @@ public class MenuNguoiMuon {
         while (true) {
             System.out.println("\n=== MENU NGUOI MUON ===");
             System.out.println("1. Xem danh sach sach");
-            System.out.println("2. Muon sach");
-            System.out.println("3. Xem sach minh dang muon"); // Đổi tên cho rõ nghĩa
-            System.out.println("4. Tra sach");
+            //System.out.println("2. Muon sach");
+            System.out.println("2. Xem sach minh dang muon"); // Đổi tên cho rõ nghĩa
+            //System.out.println("4. Tra sach");
             // chức năng thêm
-            System.out.println("5. Chinh sua thong tin ca nhan");
-            System.out.println("6. Tim kiem sach");
+            System.out.println("3. Chinh sua thong tin ca nhan");
+            System.out.println("4. Tim kiem sach");
             System.out.println("0. Quay lai menu chinh");
             System.out.print("Chon: ");
             
@@ -43,14 +43,14 @@ public class MenuNguoiMuon {
             
             switch(c) {
                 case 1: ql.hienThiSach(); break;
-                case 2: ql.muonSach(); break;
+                //case 2: ql.muonSach(); break;
                 // Hàm này vẫn hiển thị của tất cả mọi người,
                 // nhưng người dùng có thể tự xem của mình
-                case 3: ql.hienThiSachCuaMotNguoiMuon(); break; 
-                case 4: ql.traSach(); break;
+                case 2: ql.hienThiSachCuaMotNguoiMuon(); break; 
+                //case 4: ql.traSach(); break;
                 //chức năng thêm
-                case 5: ql.chinhSuaThongTinNguoiMuon(); break;
-                case 6: ql.timKiem(false); break; // false vì đây là Nguoi Muon
+                case 3: ql.chinhSuaThongTinNguoiMuon(); break;
+                case 4: ql.timKiem(false); break; // false vì đây là Nguoi Muon
                 default: System.out.println("Lua chon khong hop le!");
             }
         }
